@@ -23,11 +23,24 @@ public class BinaryHeapDistanceQueue implements DistanceQueue {
 
     @Override
     public void decreaseKey(int v, long k) {
+        key[v] = k;
+        if (pos[v] == -1) {
+            heap[size] = v;
+            pos[v] = size;
+            size++;
+        }
+        siftUp(pos[v]);
     }
 
     @Override
     public int extractMin() {
-        return -1;
+        if (isEmpty()) throw new NoSuchElementException("queue is empty");
+        int min = heap[0];
+        size--;
+        swap(0, size);
+        pos[min] = -1;
+        siftDown(0);
+        return min;
     }
 
     @Override

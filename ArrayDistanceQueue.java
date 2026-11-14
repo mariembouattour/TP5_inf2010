@@ -1,3 +1,4 @@
+import java.util.NoSuchElementException;
 import java.util.Arrays;
 
 /**
@@ -20,11 +21,23 @@ public class ArrayDistanceQueue implements DistanceQueue {
 
     @Override
     public void decreaseKey(int v, long k) {
+        if (!queued[v]) {
+            queued[v] = true;
+            size++;
+        }
+        key[v] = k;
     }
 
     @Override
     public int extractMin() {
-        return -1;
+        if (isEmpty()) throw new NoSuchElementException("queue is empty");
+        int min = -1;
+        for (int v = 0; v < key.length; v++) {
+            if (queued[v] && (min == -1 || key[v] < key[min])) min = v;
+        }
+        queued[min] = false;
+        size--;
+        return min;
     }
 
     @Override

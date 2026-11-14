@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 /**
  * InefficientArrayDistanceQueue: keys and values are both stored
@@ -24,6 +24,7 @@ public class InefficientArrayDistanceQueue implements DistanceQueue {
                 queueKeys[i] = k;
                 return;
             }
+            i++;
         }
         queueValues[size] = v;
         queueKeys[size++] = k;
@@ -32,7 +33,16 @@ public class InefficientArrayDistanceQueue implements DistanceQueue {
     @Override
     //À faire
     public int extractMin() {
-        return 0;
+        if (isEmpty()) throw new NoSuchElementException("queue is empty");
+        int minIdx = 0;
+        for (int i = 1; i < size; i++) {
+            if (queueKeys[i] < queueKeys[minIdx]) minIdx = i;
+        }
+        int v = queueValues[minIdx];
+        size--;
+        queueValues[minIdx] = queueValues[size];
+        queueKeys[minIdx] = queueKeys[size];
+        return v;
     }
 
     @Override
