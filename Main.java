@@ -55,9 +55,12 @@ public class Main {
     static final double GRAPH_BUDGET_MS = 1000; // aim to spend about this long timing each graph
     static final int WARMUP_ROUNDS = 200;
 
-    static final String[] NAMES = {"listArray", "listHeap", "matArray", "matHeap"};
-    static final List<IntFunction<DistanceQueue>> QUEUES = List.of(
-            ArrayDistanceQueue::new, BinaryHeapDistanceQueue::new,
+    static final boolean COMPARE_INEFFICIENT_QUEUE = true;
+
+    static final String[] NAMES = COMPARE_INEFFICIENT_QUEUE ? new String[]{"listArray", "listIneff", "matArray", "matIneff"}
+            : new String[]{"listArray", "listHeap", "matArray", "matHeap"};
+    static final List<IntFunction<DistanceQueue>> QUEUES = COMPARE_INEFFICIENT_QUEUE ? List.of(ArrayDistanceQueue::new, InefficientArrayDistanceQueue::new,
+            ArrayDistanceQueue::new, InefficientArrayDistanceQueue::new) : List.of(ArrayDistanceQueue::new, BinaryHeapDistanceQueue::new,
             ArrayDistanceQueue::new, BinaryHeapDistanceQueue::new);
 
     static long sink;                           // consumes results so the work cannot be optimized away
